@@ -79,19 +79,26 @@ public class AdminInterface implements ActionListener, TreeSelectionListener {
 			((User) selectedLabel.getUserObject()).generateUI();
 		}
 		if (e.getSource() == showUserTotal) {
-			JOptionPane.showMessageDialog(frame, User.getUserCount(),
+			UserTotalVisitor UTvisitor = new UserTotalVisitor();
+			root.accept(UTvisitor);
+			JOptionPane.showMessageDialog(frame, UTvisitor.getCounter(),
 					"Total Users", 1);
 		}
 		if (e.getSource() == showGroupTotal) {
-			JOptionPane.showMessageDialog(frame, Usergroup.getGroupCount(),
+			GroupTotalVisitor total = new GroupTotalVisitor();
+			root.accept(total);
+			JOptionPane.showMessageDialog(frame, total.getCounter(),
 					"Total Groups", 1);
 		}
 		if (e.getSource() == showMessagesTotal) {
-			JOptionPane.showMessageDialog(frame, User.getGlobalTweet(),
+			TotalMessagesVisitor total = new TotalMessagesVisitor();
+			root.accept(total);
+			JOptionPane.showMessageDialog(frame, total.getCounter(),
 					"Total number of messages", 1);
 		}
 		if (e.getSource() == showPositiveTotal) {
-			JOptionPane.showMessageDialog(frame, User.getPositiveTweet(),
+			PositiveVisitor PV = new PositiveVisitor();
+			JOptionPane.showMessageDialog(frame, PV.getCounter(),
 					"Positive Tweets", 1);
 		}
 
@@ -115,6 +122,8 @@ public class AdminInterface implements ActionListener, TreeSelectionListener {
 		class1 = new Usergroup("Class1");
 		class1.add(jeff);
 		class1.add(cindy);
+		
+		root.add(class1);
 
 		bobNode = new DefaultMutableTreeNode(bob);
 		aliceNode = new DefaultMutableTreeNode(alice);

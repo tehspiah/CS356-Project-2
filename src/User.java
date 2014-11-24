@@ -15,14 +15,14 @@ import javax.swing.JTextArea;
 
 public class User extends Observable implements Observer, Component {
 
-	private static int userCount, globalTweet, positiveTweet;
+	// private static int userCount, globalTweet, positiveTweet;
 	private String id;
 	private List follower, following, tweet;
 	JList<String> feed, followingWindow;
 
 	public User(String userID) {
 		id = userID;
-		userCount++;
+		// userCount++;
 		follower = new ArrayList();
 		following = new ArrayList();
 		tweet = new ArrayList();
@@ -31,18 +31,6 @@ public class User extends Observable implements Observer, Component {
 
 	public void generateUI() {
 		new UserInterface(this);
-	}
-
-	public static int getUserCount() {
-		return userCount;
-	}
-
-	public static int getGlobalTweet() {
-		return globalTweet;
-	}
-
-	public static int getPositiveTweet() {
-		return positiveTweet;
 	}
 
 	public List getFollower() {
@@ -74,6 +62,10 @@ public class User extends Observable implements Observer, Component {
 			newList.addElement(tweet.get(i).toString());
 		return newList;
 	}
+	
+	public List getTweetList(){
+		return tweet;
+	}
 
 	public String getTweet() {
 		return tweet.get(tweet.size() - 1).toString();
@@ -81,10 +73,10 @@ public class User extends Observable implements Observer, Component {
 
 	public void addTweet(String message) {
 		tweet.add(message);
-		globalTweet++;
+		// globalTweet++;
 		if (message.contains("good") || message.contains("happy")
 				|| message.contains("excelent")) {
-			positiveTweet++;
+			// positiveTweet++;
 		}
 	}
 
@@ -192,6 +184,12 @@ public class User extends Observable implements Observer, Component {
 			}
 
 		}
+	}
+
+	@Override
+	public void accept(ComponentVisitor visitor) {
+		// TODO Auto-generated method stub
+		visitor.visitUser(this);
 	}
 
 }
