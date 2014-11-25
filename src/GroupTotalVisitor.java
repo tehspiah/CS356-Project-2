@@ -1,4 +1,6 @@
-
+/*
+ * Visitor class to get the total number of groups
+ */
 public class GroupTotalVisitor implements ComponentVisitor{
 
 	private int counter = 0;

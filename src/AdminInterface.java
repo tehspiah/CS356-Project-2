@@ -11,6 +11,10 @@ import javax.swing.tree.MutableTreeNode;
 
 import java.util.*;
 
+/*
+ * Admin interface to control launching of user view, see users + groups
+ * and to view statistics.
+ */
 public class AdminInterface implements ActionListener, TreeSelectionListener {
 
 	JFrame frame;
@@ -22,12 +26,12 @@ public class AdminInterface implements ActionListener, TreeSelectionListener {
 
 	DefaultMutableTreeNode selectedLabel;
 
-	private User bob, alice, jeff, cindy;
+	private User bob, alice, jeff, cindy; //hardcoded groups and users
 	private DefaultMutableTreeNode bobNode, aliceNode, jeffNode, cindyNode,
 			rootNode, class1Node;
 	private Usergroup root, class1;
 
-	private static AdminInterface instance = null;
+	private static AdminInterface instance = null; //singleton instance
 
 	private AdminInterface() {
 		frame = new JFrame();
@@ -68,42 +72,49 @@ public class AdminInterface implements ActionListener, TreeSelectionListener {
 		frame.setVisible(true);
 	}
 
+	//action events for JButtons
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == addUser) {
 
 		}
-		if (e.getSource() == addGroup) {
+		if (e.getSource() == addGroup) { //currently not added to frame
 
 		}
-		if (e.getSource() == userView) {
+		if (e.getSource() == userView) { //launches userview
 			((User) selectedLabel.getUserObject()).generateUI();
 		}
-		if (e.getSource() == showUserTotal) {
+		if (e.getSource() == showUserTotal) { //shows total users
 			UserTotalVisitor UTvisitor = new UserTotalVisitor();
 			root.accept(UTvisitor);
 			JOptionPane.showMessageDialog(frame, UTvisitor.getCounter(),
 					"Total Users", 1);
 		}
-		if (e.getSource() == showGroupTotal) {
+		if (e.getSource() == showGroupTotal) { //shows # of groups
 			GroupTotalVisitor total = new GroupTotalVisitor();
 			root.accept(total);
 			JOptionPane.showMessageDialog(frame, total.getCounter(),
 					"Total Groups", 1);
 		}
-		if (e.getSource() == showMessagesTotal) {
+		if (e.getSource() == showMessagesTotal) { //shows total # of messages
 			TotalMessagesVisitor total = new TotalMessagesVisitor();
 			root.accept(total);
 			JOptionPane.showMessageDialog(frame, total.getCounter(),
 					"Total number of messages", 1);
 		}
-		if (e.getSource() == showPositiveTotal) {
+		if (e.getSource() == showPositiveTotal) { //shows number of positive tweets
 			PositiveVisitor PV = new PositiveVisitor();
+			root.accept(PV);
 			JOptionPane.showMessageDialog(frame, PV.getCounter(),
 					"Positive Tweets", 1);
 		}
 
 	}
 
+	/*
+	 * Method to create users and groups and to add them to the respective groups
+	 * Creates a user, then puts them into the user into a hash table to return strings
+	 * as a User. Then it creates nodes to show in the admin interface hierarchy.
+	 */
 	public void addUsers() {
 		bob = new User("Bob");
 		alice = new User("Alice");
@@ -139,14 +150,17 @@ public class AdminInterface implements ActionListener, TreeSelectionListener {
 		rootNode.add(class1Node);
 	}
 
+	//getter for hashtable
 	public Hashtable<String, User> getUserTable() {
 		return userTable;
 	}
 
+	//tree selection listener
 	public void valueChanged(TreeSelectionEvent e) {
 		selectedLabel = (DefaultMutableTreeNode) (e.getPath().getLastPathComponent());
 	}
 
+	//singleton
 	public static AdminInterface getInstance() {
 		if (instance == null) {
 			instance = new AdminInterface();

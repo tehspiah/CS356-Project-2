@@ -1,3 +1,6 @@
+/*
+ * Visitor class to count the total number of users
+ */
 public class UserTotalVisitor implements ComponentVisitor {
 
 	private int counter = 0;

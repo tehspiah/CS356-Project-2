@@ -1,16 +1,18 @@
-
+/*
+ * Visitor class to get the total # of messages
+ */
 public class TotalMessagesVisitor implements ComponentVisitor {
 
 	private int counter;
-	
+
 	public void visitUser(User user) {
 		counter += user.getNewsFeed().size();
 	}
-	
+
 	public int getCounter() {
 		return counter;
 	}
-	
+
 	public void setCounter(int counter) {
 		this.counter = counter;
 	}
@@ -18,6 +20,6 @@ public class TotalMessagesVisitor implements ComponentVisitor {
 	@Override
 	public void visitUserGroup(Usergroup usergroup) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

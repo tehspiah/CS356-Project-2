@@ -13,22 +13,23 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+/*
+ * Class that is the Users themselves and the GUI
+ */
 public class User extends Observable implements Observer, Component {
 
-	// private static int userCount, globalTweet, positiveTweet;
 	private String id;
 	private List follower, following, tweet;
 	JList<String> feed, followingWindow;
 
 	public User(String userID) {
 		id = userID;
-		// userCount++;
 		follower = new ArrayList();
 		following = new ArrayList();
 		tweet = new ArrayList();
 
 	}
-
+	//starts up the user interface
 	public void generateUI() {
 		new UserInterface(this);
 	}
@@ -49,6 +50,9 @@ public class User extends Observable implements Observer, Component {
 		following.add(person);
 	}
 
+	/*
+	 * converts the following list to a default list model to be show on the GUI
+	 */
 	public DefaultListModel<String> getFollowingList() {
 		DefaultListModel<String> newList = new DefaultListModel<String>();
 		for (int i = 0; i < following.size(); i++)
@@ -56,32 +60,39 @@ public class User extends Observable implements Observer, Component {
 		return newList;
 	}
 
+	/*
+	 * converts the tweet list to a default list model to be shown on the GUI
+	 */
 	public DefaultListModel<String> getNewsFeed() {
 		DefaultListModel<String> newList = new DefaultListModel<String>();
 		for (int i = 0; i < tweet.size(); i++)
 			newList.addElement(tweet.get(i).toString());
 		return newList;
 	}
-	
-	public List getTweetList(){
+
+	/*
+	 * return the list of tweets made by the user
+	 */
+	public List getTweetList() {
 		return tweet;
 	}
 
+	/*
+	 * gets the latest tweet from the user's list of tweets
+	 */
 	public String getTweet() {
 		return tweet.get(tweet.size() - 1).toString();
 	}
 
+	/*
+	 * adds tweet to the user tweet list
+	 */
 	public void addTweet(String message) {
 		tweet.add(message);
-		// globalTweet++;
-		if (message.contains("good") || message.contains("happy")
-				|| message.contains("excelent")) {
-			// positiveTweet++;
-		}
 	}
 
 	/*
-	 * checks duplicate IDs
+	 * checks duplicate IDs, currently unimplemented
 	 */
 	public boolean checkId(String check) {
 		if (check.equals(id))
@@ -90,14 +101,16 @@ public class User extends Observable implements Observer, Component {
 			return false;
 	}
 
-	public String toString() {
-		return id;
-	}
-
+	/*
+	 * attach observer to the user
+	 */
 	public void attach(Observer o) {
 		follower.add(o);
 	}
 
+	/*
+	 * notify the observer is tweets have been added.
+	 */
 	public void notifyObserver() {
 		for (int i = 0; i < follower.size(); i++) {
 			((User) follower.get(i)).update(this, this.getTweet());
@@ -110,6 +123,11 @@ public class User extends Observable implements Observer, Component {
 		feed.setModel(getNewsFeed());
 	}
 
+	/*
+	 * GUI is now coded within the user class, as this allows it to access the
+	 * user object more easily and I had a problem with my previous design of having
+	 * a seperate class parsing in the user.
+	 */
 	public class UserInterface implements ActionListener {
 
 		JFrame frame;

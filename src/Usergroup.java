@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Class that holds the group of users.
+ */
 public class Usergroup implements Component{
 
 	private String name;
@@ -10,10 +13,16 @@ public class Usergroup implements Component{
 		name = string;
 	}
 	
+	/*
+	 * method to add User groups
+	 */
 	public void add(Component component){
 		childComponents.add(component);
 	}
 	
+	/*
+	 * getter for the user groups
+	 */
 	public List<Component> getComponents(){
 		return childComponents;
 	}
@@ -22,9 +31,12 @@ public class Usergroup implements Component{
 		return name;
 	}
 
+	/* Accepts visitor for the root group and child components
+	 * (non-Javadoc)
+	 * @see Component#accept(ComponentVisitor)
+	 */
 	@Override
 	public void accept(ComponentVisitor visitor) {
-		// TODO Auto-generated method stub
 		visitor.visitUserGroup(this);
 		for (int i=0; i<childComponents.size(); i++){
 			childComponents.get(i).accept(visitor);
