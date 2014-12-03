@@ -8,9 +8,16 @@ public class Usergroup implements Component{
 
 	private String name;
 	private List<Component> childComponents = new ArrayList<Component>();
+	private long creationTime;
 
 	public Usergroup(String string) {
 		name = string;
+		creationTime = System.currentTimeMillis();
+		System.out.println("creation time for " +name +" " +creationTime);
+	}
+	
+	public String getName(){
+		return name;
 	}
 	
 	/*

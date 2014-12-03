@@ -20,6 +20,7 @@ public class User extends Observable implements Observer, Component {
 
 	private String id;
 	private List follower, following, tweet;
+	private long creationTime, lastUpdateTime;
 	JList<String> feed, followingWindow;
 
 	public User(String userID) {
@@ -27,11 +28,17 @@ public class User extends Observable implements Observer, Component {
 		follower = new ArrayList();
 		following = new ArrayList();
 		tweet = new ArrayList();
-
+		creationTime = System.currentTimeMillis();
 	}
-	//starts up the user interface
+
+	// starts up the user interface
 	public void generateUI() {
 		new UserInterface(this);
+		System.out.println("Time of creation " +id +" " + creationTime);
+	}
+
+	public String getID() {
+		return id;
 	}
 
 	public List getFollower() {
@@ -89,6 +96,12 @@ public class User extends Observable implements Observer, Component {
 	 */
 	public void addTweet(String message) {
 		tweet.add(message);
+		lastUpdateTime = System.currentTimeMillis();
+		System.out.println("Update time for" + id +" " + lastUpdateTime);
+	}
+
+	public long getUpdateTime() {
+		return lastUpdateTime;
 	}
 
 	/*
@@ -109,7 +122,7 @@ public class User extends Observable implements Observer, Component {
 	}
 
 	/*
-	 * notify the observer is tweets have been added.
+	 * notify the observer that tweets have been added.
 	 */
 	public void notifyObserver() {
 		for (int i = 0; i < follower.size(); i++) {
@@ -121,12 +134,14 @@ public class User extends Observable implements Observer, Component {
 	public void update(Observable o, Object arg) {
 		addTweet(arg.toString());
 		feed.setModel(getNewsFeed());
+		lastUpdateTime = System.currentTimeMillis();
+		System.out.println("Update time for" + id + " " + lastUpdateTime);
 	}
 
 	/*
 	 * GUI is now coded within the user class, as this allows it to access the
-	 * user object more easily and I had a problem with my previous design of having
-	 * a seperate class parsing in the user.
+	 * user object more easily and I had a problem with my previous design of
+	 * having a seperate class parsing in the user.
 	 */
 	public class UserInterface implements ActionListener {
 
